@@ -57,6 +57,7 @@ library(ggspatial)
 library(jtools)
 library(tigris)
 library(huxtable)
+library(interactions)
 ```
 
 ## Mode of Transportation
@@ -662,19 +663,36 @@ coeff_names_interaction <- c("Constant" = "(Intercept)",
       "Percent of Pop. Commuting Via Biking" = "pct_bike")
                    
                    
-interaction_model1 <- lm(avg_w_ind ~ pct_asthma + pct_mental + pct_obesity + pct_walk + pct_car + pct_public + pct_bike, centered_data)
+# interaction_model1 <- lm(avg_w_ind ~ pct_asthma + pct_mental + pct_obesity + white_majority + pct_walk + pct_car + pct_public + pct_bike + pct_taxi + pct_motorcycle + pct_other, centered_data)
 
-interaction_model2 <- lm(avg_w_ind ~ pct_asthma + pct_mental + pct_obesity + pct_walk + pct_car + pct_public + pct_bike + pct_walk*pct_car, centered_data)
+interaction_model2 <- lm(avg_w_ind ~ pct_asthma + pct_mental + pct_obesity + white_majority + pct_walk + pct_car + pct_public + pct_bike + pct_taxi + pct_motorcycle + pct_other + pct_walk*pct_car, centered_data)
 
-interaction_model3 <- lm(avg_w_ind ~ pct_asthma + pct_mental + pct_obesity + pct_walk + pct_car + pct_public + pct_bike + pct_walk*pct_public, centered_data)
+interaction_model3 <- lm(avg_w_ind ~ pct_asthma + pct_mental + pct_obesity + white_majority + pct_walk + pct_car + pct_public + pct_bike + pct_taxi + pct_motorcycle + pct_other + pct_walk*pct_public, centered_data)
 
-interaction_model4 <- lm(avg_w_ind ~ pct_asthma + pct_mental + pct_obesity + pct_walk + pct_car + pct_public + pct_bike + pct_walk*pct_bike, centered_data)
+interaction_model4 <- lm(avg_w_ind ~ pct_asthma + pct_mental + pct_obesity + white_majority + pct_walk + pct_car + pct_public + pct_bike + pct_taxi + pct_motorcycle + pct_other + pct_walk*pct_bike, centered_data)
 
-export_summs(centered_model, interaction_model1, interaction_model2, interaction_model3, interaction_model4,
+interaction_model5 <- lm(avg_w_ind ~ pct_asthma + pct_mental + pct_obesity + white_majority + pct_walk + pct_car + pct_public + pct_bike + pct_taxi + pct_motorcycle + pct_other + pct_walk*white_majority, centered_data)
+
+export_summs(centered_model, interaction_model2, interaction_model3, interaction_model4, interaction_model5,
              error_format = "(p = {p.value})",
              error_pos = "same",
              model.names = c("Centered",
-                             "Interacted", "i2", "i3", "i4"))
+                             "Walking/By Car", "Walking/By Transit ", "Walking/By Biking","Walking/By White Majority"))
+```
+For examining interactions amongst the commuting patterns, we decided to interact each commuting type with the commuting by walking (pct_walk) variable. Additionally, we tested our a categorical variable (white_majority) with commuting by walking for any possible effects. To our surprise, all of our interactions resulted in significant observations with increased correlation values as measured by R2.
+
+For further analysis, we decided to focus on the interaction between commuting by walking and commuting by car since it provided the best model fit (0.47)
+
+```{r interactions plot, eval=TRUE}
+
+interact_plot(interaction_model2, pred = pct_walk, modx = pct_car,
+              interval = TRUE) +
+  scale_x_continuous(name = "Percent of Commuting by Walking") +
+  scale_y_continuous(name = "Walkability")
+
+# (breaks = breaks <- c(-2, -1, 0, 1, 2),
+#                      labels = round(breaks * 10 + mean(data$pct_walk, na.rm = TRUE)),
+
 ```
 
 # Resources
