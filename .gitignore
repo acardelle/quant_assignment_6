@@ -2,6 +2,9 @@
 .Rhistory
 .Rapp.history
 
+# General Files
+data/PLACES__Local_Data_for_Better_Health__Census_Tract_Data_2020_release.csv
+
 # Session Data files
 .RData
 
