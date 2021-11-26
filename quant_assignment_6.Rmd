@@ -172,7 +172,7 @@ Source: United States Environmental Protection Agency: National Walkability Inde
 ```{r}
 # The following code was used to created the original "Walkability" file, it was then re-loaded as a .shp file
 # This was done to reduce the file size and because the .shp file doesn't except "avg_w_ind" as a column name (too long apparently).
-
+# 
 # Walkability <- st_read(dsn = "Natl_WI.gdb") %>%
 #   filter(STATEFP == "25") %>%
 #   select(GEOID10, NatWalkInd, TotPop) %>%
@@ -648,6 +648,7 @@ In our multi-variate regression, we noticed that our intercept was a negative nu
 
 What we found in the process of mean centering our data did very little to improve the overall analysis of our regression table. With a p-value of .96, the mean-centered intercept was statistically insignificant. Even if it had produced a significant p-value, the estimated walkability score of 0 does not offer any new insight as once again this isn't a possible score on the Walkability Index (1-20). As expected, all other estimated coefficient values stayed constant despite the mean-centering. Ultimately, we prefer this second model, as it shows that mean-centering has been attempted (as opposed to not addressing the negative intercept value in the non-mean centered multi-variate regression) but we acknowledge this does not offer any new insight. 
  
+# Assignment 5 - Transformations
 
 # Resources
 
