@@ -679,9 +679,17 @@ export_summs(centered_model, interaction_model2, interaction_model3, interaction
              model.names = c("Centered",
                              "Walking/By Car", "Walking/By Transit ", "Walking/By Biking","Walking/By White Majority"))
 ```
-For examining interactions amongst the commuting patterns, we decided to interact each commuting type with the commuting by walking (pct_walk) variable. Additionally, we tested our a categorical variable (white_majority) with commuting by walking for any possible effects. To our surprise, all of our interactions resulted in significant observations with increased correlation values as measured by R2.
+For examining interactions amongst the commuting patterns, we decided to interact the three main commuting types (pct_car, pct_bike, pct_public) with the commuting by walking (pct_walk) variable. Additionally, we tested a categorical variable (white_majority) with commuting by walking for any possible effects. 
 
-For further analysis, we decided to focus on the interaction between commuting by walking and commuting by car since it provided the best model fit (0.47)
+The results were surprising -- all three of our interactions resulted in significant observations (p-value < 0.05) with increased correlation values as measured by R^2. Pct_car had a strong positive effect on pct_walk's contribution to a census tract's Walkability score. Whereas both pct_public and pct_bike had strong negative effects on pct_walk's contribution to a census tract's Walkability score.
+
+For our categorical variable (white_majority), when compared to majority White census tracts, non-Majority White census tracts reduce the positive effect of pct_walk on a census tract's given Walkability score.
+
+For further analysis, we decided to focus on the interaction between commuting by walking and commuting by car since it provided the best model fit (R^2 = 0.47). The graph shows the positive trend lines that pct_car has on pct_walk in census tracts.
+
+As expected, census tracts whose commuting rate by car (pct_car) is 1 standard deviation above the median commuting rate by car, has a distinctly stronger effect on pct_walk's positive contribution to a census tract's Walkability score.
+
+The inverse holds true for a census tract whose commuting rate by car is 1 standard deviation below the median rate.
 
 ```{r interactions plot, eval=TRUE}
 
