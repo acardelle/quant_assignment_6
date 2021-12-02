@@ -1,7 +1,7 @@
 ---
-title: "Quant Assignment 6"
+title: "Walkability and its relationship to commute and health"
 author: "Rania Karamallah, MC Abbott, Alex Cardelle"
-date: "11/30/2021"
+date: "12/2/2021"
 output: 
   rmdformats::downcute
 ---
@@ -10,15 +10,25 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Research Question
+# Introduction
 
-Is there a relationship between mode of transportation to travel to work and different health indicators? How do other demographic characteristics (eg. race and age) factor in, if at all?
+As first year MUP students, we were interested in dating using the development of quantitative research competencies as a way of looking at the impact the built environment has on health outcomes. We decided to approach this with a wider set of questions that would hopefully help us to understand the relationship between health and the built environment in the context of the impact of other variables.
 
-# Prior Research
+## Research Questions
 
-Riggs and Sethi (2020), in examining a quantified, indexed version of "walkability", have determined that neighborhoods scoring high in this category do show increased multimodal/alternative transportation use (namely -- walking, cycling, or transit). With more specificity, Watson et. al (2020) provide a national-level overview that confirms a strong link between high walkability scores and walking itself as a mode of commuting to work throughout the urban areas of the United States. Our research question seeks to confirm these findings through selected census and walkability study data.
+Is there a relationship between walkability and mode of transportation to travel to work? Walkability and health outcomes? How do other demographic characteristics (eg. race and age) factor in, if at all?
+
+### Note on Walkability
+
+For the purpose of this course, we used walkability score as a proxy for the built environment. Unfortunately, as we've learned, walkability tends to focus more on proximity to amenities, as opposed to factors like sidewalk width, shade, sound pollution and other elements of the built environment. 
+
+# Background
+
+With an increased appreciation of the social determinants of health, new academic research is taking the topic further with the concept of infrastructural determinants of health and the role of the built environment on health impacts. Riggs and Sethi (2020), in examining a quantified, indexed version of "walkability", have determined that neighborhoods scoring high in this category do show increased multimodal/alternative transportation use (namely -- walking, cycling, or transit). With more specificity, Watson et. al (2020) provide a national-level overview that confirms a strong link between high walkability scores and walking itself as a mode of commuting to work throughout the urban areas of the United States. Our research question seeks to confirm these findings through selected census and walkability study data.
 
 # Data
+
+## Data Sources
 
 We will be using the following data sets:
 
@@ -26,7 +36,7 @@ We will be using the following data sets:
 * Centers for Disease Control and Prevention: PLACES U.S. Chronic Disease Indicators (2020)
 * United States Environmental Protection Agency: National Walkability Index (2021)
 
-# Variables for Analysis
+## Variables for Analysis
 
 Continuous
 * Population Percentage with Current Mental Health Issues
@@ -59,6 +69,17 @@ library(tigris)
 library(huxtable)
 library(interactions)
 ```
+
+# Methods
+
+To approach our research question we performed the following analyses on our data:
+
+* Descriptive statistics of variables
+* Bivariate regression
+* Multivariate regression
+* Multivariate regression with interactions
+
+We used walkability as our dependent variable, and used our independent variables of mode of transport to work, health outcomes, and race. 
 
 ## Mode of Transportation
 
@@ -400,7 +421,7 @@ cat_summary_sex <- tibble(`Majority Sex` =
 kable(cat_summary_sex, digits = 2)
 
 ```
-# Assignment  - Bivariate regression
+# Bivariate Regression
 
 In trying to understand the importance of walkability to health and commuting patterns, we ran a regression analysis for correlation using 'cor.test' and 'age_model', then plotted the data on a graph. Our dependent variable is "walkability" provided through a Massachusetts Census Tracts' walkability score. Our independent variables are divided into two fields: health metrics and commuting choice. For health metrics, we are using the percent of the population afflicted with asthma, obesity, or mental health issues respectively. For commuting choice, we're using the percent of the population that commutes via walking, biking, public transit, or car respectively.
 
@@ -518,7 +539,7 @@ ggplot(data) +
        title = "Regression: Walkability Score and Biking Use, Correlation: 0.34")
 ```
 
-For **commuting by biking**, the 95-percent confidence interval for the correlation does not include zero - all values in the interval are positive. Additionally, this finding is supported by the regression, with an R-squared value of 0.11 and a p-value of less than 0.05. This means we can say with 95-percent confidence that higher commuting rates by biking are associated with more walkable census tracts and that this finding is _**statistically significant**_.
+For **commuting by biking**, the 95-percent confidence interval for the correlation does not include zero - all values in the interval are positive. Additionally, this finding is supported by the regression, with an R-squared valuea of 0.11 and a p-value of less than 0.05. This means we can say with 95-percent confidence that higher commuting rates by biking are associated with more walkable census tracts and that this finding is _**statistically significant**_.
 
 ## Walkability and Commuting by Public Transit
 ```{r walkability and commuting by transit}
@@ -601,7 +622,7 @@ Although the sex_category has is not statistically significant, however, it show
 We can also see that Race_majority is statistically significant, census tracts with higher non-majority white race increase the walkability score for the census tract.
 
 
-# Assignment 4 - Multivariate regression
+# Multivariate Regression
 
 ```{r}
 full_model <- lm(avg_w_ind ~ pct_asthma + pct_obesity + pct_mental + pct_walk + pct_bike + pct_public + pct_car + pct_taxi + pct_motorcycle + pct_other + white_majority, data)
@@ -619,7 +640,7 @@ This explains that census tracts with access to public transit, walking routes, 
 
 Overall, our model explains about 40 percent of the variation in walkability-level can be explained with these variables.
 
-# Assignment 5 - Transformations
+# Transformations
 
 ```{r}
 centered_data <- data %>%
@@ -649,7 +670,7 @@ In our multi-variate regression, we noticed that our intercept was a negative nu
 
 What we found in the process of mean centering our data did very little to improve the overall analysis of our regression table. With a p-value of .96, the mean-centered intercept was statistically insignificant. Even if it had produced a significant p-value, the estimated walkability score of 0 does not offer any new insight as once again this isn't a possible score on the Walkability Index (1-20). As expected, all other estimated coefficient values stayed constant despite the mean-centering. Ultimately, we prefer this second model, as it shows that mean-centering has been attempted (as opposed to not addressing the negative intercept value in the non-mean centered multi-variate regression) but we acknowledge this does not offer any new insight. 
  
-# Assignment 6 - Interactions
+# Interactions
 
 ```{r Transformation, eval=TRUE}
 
@@ -702,6 +723,8 @@ interact_plot(interaction_model2, pred = pct_walk, modx = pct_car,
 #                      labels = round(breaks * 10 + mean(data$pct_walk, na.rm = TRUE)),
 
 ```
+
+# Findings!
 
 # Resources
 
